@@ -134,9 +134,7 @@ No * balancear(No *raiz){
     return raiz;
 }
 
-//insercoes e remocoes
-
-//remocao
+//Remove o contato desejado pelo nome
 No * remover(No* raiz, char name[30]){
     if(raiz==NULL){
         printf("\nNo contact with this name!\n\n"); 
@@ -189,6 +187,7 @@ No * remover(No* raiz, char name[30]){
     }     
 }
 
+//imprime a arvore de contatos
 void printContacts(Contact *contacts){
     printf("Name: %s Birth date: %d/%d/%d Email: %s Phone: %s\n", contacts->name, contacts->birth.day, contacts->birth.month, contacts->birth.year, 
             contacts->email, contacts->phone);
@@ -205,6 +204,7 @@ void imprimir(No * raiz, int nivel){
     }
 }
 
+//Busca o contato desejado pelo nome
 No* busca(No *raiz, char name[30]){
     // Se a raiz é nula
     if (raiz == NULL){
@@ -229,6 +229,7 @@ No* busca(No *raiz, char name[30]){
     }
 }
 
+//Insere o novo contato na árvore, balanceando ela caso precise
 No* inserir(No *raiz, No *new_node){
     
     if(raiz==NULL){ //arvore vazia
@@ -249,6 +250,7 @@ No* inserir(No *raiz, No *new_node){
         return raiz;
 }
 
+//Monta o novo contato a ser inserido
 No* buildContact(){
     No *new_node = malloc(sizeof(No));
     Contact *new_contact = malloc(sizeof(Contact));
@@ -274,14 +276,19 @@ No* buildContact(){
     return new_node;
 }
 
+//Chama a função inserir que builda a árvore com o novo contato
 No* insContact(No *raiz) {
     printf("Create contact:\n");
     No* new_node = buildContact();
+
     raiz = inserir(raiz, new_node);
+
     printf("\nSuccessfully created contact %s\n\n", new_node->contacts->name);
     return raiz;
 }
 
+//Altera oque quiser no contato (nome, email, data de nascimento ou telefone)
+//Caso altere o nome a árvore é rebalanceada
 No* updateContact(No *raiz, int nivel){
     int opt, day, month, year;
     char name[30], name_c[30], email[40], phone[15];
@@ -292,10 +299,12 @@ No* updateContact(No *raiz, int nivel){
     printf("Write the name of the contact to update: ");
     scanf("%s", name);
     contactUpdate = busca(raiz, name);
+
     if(contactUpdate == NULL){
         printf("No contact with this name!");
         return raiz;
     }
+
     aux2 = contactUpdate->contacts;
     printf("What do you want do update in contact:\n");
     printf("(1)Name; (2)Birth date; (3)Email; (4)Phone.\n");
@@ -333,6 +342,7 @@ No* updateContact(No *raiz, int nivel){
     return raiz;
 }
 
+//Quando o programa inicia, pega todos os contatos de dentro do arquivo e monta a arvore
 No* getContacts(No *raiz_ref) {
     FILE *f = fopen("treeOfContacts.dat", "rb+");
     if (!f) return raiz_ref;
@@ -362,6 +372,7 @@ No* getContacts(No *raiz_ref) {
     return raiz;
 }
 
+//Quando o programa finaliza, salva todas as alterações dentro do arquivo
 void save(No *raiz, int h, FILE* f){
     if (raiz == NULL) return;
 
@@ -377,6 +388,7 @@ void saveContacts(No *raiz){
     fclose(f);
 }
 
+// Menu
 int menu()
 {
     int op=0;
