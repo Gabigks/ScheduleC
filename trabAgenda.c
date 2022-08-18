@@ -215,7 +215,7 @@ No* busca(No *raiz, char name[30]){
     // se não for nula, retorna verdadeiro
     else if (strcmp(raiz->contacts->name, name) == 0)
         return raiz;
- 
+
     // Chamada recursiva para a subarvore da esquerda caso o valor do nó seja maior
     // que o valor que estamos tentando achar
     else if (strcmp(raiz->contacts->name, name) > 0){
@@ -293,11 +293,12 @@ No* updateContact(No *raiz, int nivel){
     scanf("%s", name);
     contactUpdate = busca(raiz, name);
     if(contactUpdate == NULL){
+        printf("No contact with this name!");
         return raiz;
     }
     aux2 = contactUpdate->contacts;
     printf("What do you want do update in contact:\n");
-    printf("(1)Name; (2)Birth date; (3)Email; (4)Phone.");
+    printf("(1)Name; (2)Birth date; (3)Email; (4)Phone.\n");
     scanf("%d", &opt);
     switch(opt){
         case 1:
@@ -327,12 +328,13 @@ No* updateContact(No *raiz, int nivel){
 
         default:
         printf("Invalid option!");
+        break;
     }
     return raiz;
 }
 
 No* getContacts(No *raiz_ref) {
-    FILE *f = fopen("contacts.dat", "rb+");
+    FILE *f = fopen("treeOfContacts.dat", "rb+");
     if (!f) return raiz_ref;
 
     No *raiz = (No*)malloc(sizeof(No));
@@ -356,6 +358,7 @@ No* getContacts(No *raiz_ref) {
         raiz = inserir(raiz, no_aux);
         contact = (Contact*)malloc(sizeof(Contact));
     }
+    fclose(f);
     return raiz;
 }
 
@@ -368,7 +371,7 @@ void save(No *raiz, int h, FILE* f){
 }
 void saveContacts(No *raiz){
     if (raiz == NULL) return;
-    FILE *f = fopen("contacts.dat", "wb+");
+    FILE *f = fopen("treeOfContacts.dat", "wb+");
 
     save(raiz, 1, f);
     fclose(f);
